@@ -365,6 +365,10 @@ main .container .left{
     margin: 0.6rem;
 }
 
+.middle .feed .edit{
+    margin-left: 240px;
+}
+
 .middle .liked-by{
     display: flex;
 }
