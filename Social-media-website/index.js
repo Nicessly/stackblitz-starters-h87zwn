@@ -50,3 +50,54 @@ messagesNotification.addEventListener('click', () => {
         messages.style.boxShadow = 'none';
     }, 2000);
 })
+
+const createPostForm = document.querySelector('.create-post');
+const feedContainer = document.querySelector('.feeds');
+
+createPostForm.addEventListener('submit', function(event) {
+    event.preventDefault(); // Evitar que el formulario se envíe
+
+    const inputField = document.querySelector('#create-post');
+    const postText = inputField.value;
+
+    // Crear un nuevo elemento de publicación
+    const newPost = document.createElement('div');
+    newPost.classList.add('feed');
+
+    // Contenido de la nueva publicación
+    newPost.innerHTML = `
+        <div class="head"></div>
+        <div class="user">
+            <div class="profile-pic">
+                <img src="images/profile-8.jpg" alt="">
+            </div>
+            <div class="info">
+                <h3>Your Name</h3>
+                <small>Now</small>
+            </div>
+            <span class="edit"><i class="uil uil-ellipsis-v"></i></span>
+        </div>
+        <div class="photo"></div>
+        <div class="action-button">
+            <div class="interaction-button">
+                <span><i class="uil uil-thumbs-up"></i></span>
+                <span><i class="uil uil-comment"></i></span>
+                <span><i class="uil uil-share"></i></span>
+            </div>
+            <div class="bookmark">
+                <span><i class="uil uil-bookmark"></i></span>
+            </div>
+        </div>
+        <div class="caption">
+            <p><b>Your Name</b> ${postText} <span class="hash-tag">#lifestyle</span></p>
+        </div>
+        <div class="comments text-muted">View all 0 comments</div>
+    `;
+
+    // Insertar la nueva publicación al principio del contenedor de publicaciones
+    feedContainer.prepend(newPost);
+
+    // Limpiar el campo de entrada después de publicar
+    inputField.value = '';
+});
+
