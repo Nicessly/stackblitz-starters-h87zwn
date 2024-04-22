@@ -88,8 +88,9 @@ const addPost = (postText) => {
         <div class="photo"></div>
         <p> ${postText}</p>
         <div class="action-button">
-            <div class="interaction-button">
-                <span><i class="uil uil-thumbs-up"></i></span>
+        <div class="interaction-button">
+        <span><i class="uil uil-thumbs-up"></i></span>
+        <span class="like-count">0</span>
                 <span><i class="uil uil-comment"></i></span>
                 <span><i class="uil uil-share"></i></span>
             </div>
@@ -146,22 +147,27 @@ createPostForm.addEventListener('keydown', function(event) {
     }
 });
 
-const thumbsUpIcon = document.querySelector('.interaction-button .uil-thumbs-up');
-const likeCount = document.querySelector('.interaction-button .like-count');
+document.addEventListener('DOMContentLoaded', function() {
+    const thumbsUpIcons = document.querySelectorAll('.interaction-button .uil-thumbs-up');
+    const likeCounts = document.querySelectorAll('.interaction-button .like-count');
 
-let likeCounter = 0;
-let isLiked = false;
+    thumbsUpIcons.forEach((thumbsUpIcon, index) => {
+        let likeCounter = 0;
+        let isLiked = false;
+        const likeCount = likeCounts[index];
 
-thumbsUpIcon.addEventListener('click', () => {
-    if (!isLiked) {
-        likeCounter++;
-        thumbsUpIcon.classList.add('active');
-        isLiked = true;
-    } else {
-        likeCounter--;
-        thumbsUpIcon.classList.remove('active');
-        isLiked = false;
-    }
-    likeCount.textContent = likeCounter;
+        thumbsUpIcon.addEventListener('click', () => {
+            if (!isLiked) {
+                likeCounter++;
+                thumbsUpIcon.classList.add('active');
+                isLiked = true;
+            } else {
+                likeCounter--;
+                thumbsUpIcon.classList.remove('active');
+                isLiked = false;
+            }
+            likeCount.textContent = likeCounter;
+        });
+    });
 });
 
