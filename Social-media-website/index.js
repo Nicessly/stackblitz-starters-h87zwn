@@ -54,18 +54,26 @@ messagesNotification.addEventListener('click', () => {
 const createPostForm = document.querySelector('.create-post');
 const feedContainer = document.querySelector('.feeds');
 
-createPostForm.addEventListener('submit', function(event) {
-    event.preventDefault(); // Evitar que el formulario se envíe
+// Función para guardar las publicaciones en el localStorage
+const savePostsToLocalStorage = (posts) => {
+    localStorage.setItem('posts', JSON.stringify(posts));
+};
 
-    const inputField = document.querySelector('#create-post');
-    const postText = inputField.value;
+// Función para cargar las publicaciones desde el localStorage
+const loadPostsFromLocalStorage = () => {
+    const savedPosts = JSON.parse(localStorage.getItem('posts'));
+    return savedPosts ? savedPosts : [];
+};
 
+// Función para agregar una nueva publicación
+const addPost = (postText) => {
     // Crear un nuevo elemento de publicación
     const newPost = document.createElement('div');
     newPost.classList.add('feed');
 
     // Contenido de la nueva publicación
     newPost.innerHTML = `
+        <!-- Estructura de la publicación -->
         <div class="head"></div>
         <div class="user">
             <div class="profile-pic">
@@ -78,6 +86,7 @@ createPostForm.addEventListener('submit', function(event) {
             <span class="edit"><i class="uil uil-ellipsis-v"></i></span>
         </div>
         <div class="photo"></div>
+        <p> ${postText}</p>
         <div class="action-button">
             <div class="interaction-button">
                 <span><i class="uil uil-thumbs-up"></i></span>
@@ -89,7 +98,7 @@ createPostForm.addEventListener('submit', function(event) {
             </div>
         </div>
         <div class="caption">
-            <p><b>Your Name</b> ${postText} <span class="hash-tag">#lifestyle</span></p>
+            
         </div>
         <div class="comments text-muted">View all 0 comments</div>
     `;
@@ -97,7 +106,62 @@ createPostForm.addEventListener('submit', function(event) {
     // Insertar la nueva publicación al principio del contenedor de publicaciones
     feedContainer.prepend(newPost);
 
+    // Obtener las publicaciones guardadas en el localStorage
+    let savedPosts = loadPostsFromLocalStorage();
+    
+    // Agregar la nueva publicación al arreglo de publicaciones guardadas
+    savedPosts.unshift(postText);
+    
+    // Guardar el arreglo actualizado en el localStorage
+    savePostsToLocalStorage(savedPosts);
+};
+
+// Agregar evento de envío de formulario
+createPostForm.addEventListener('submit', function(event) {
+    event.preventDefault(); // Evitar que el formulario se envíe
+
+    const inputField = document.querySelector('#create-post');
+    const postText = inputField.value;
+
+    // Agregar la nueva publicación
+    addPost(postText);
+
     // Limpiar el campo de entrada después de publicar
     inputField.value = '';
+});
+
+// Agregar evento de pulsación de tecla en el campo de entrada
+createPostForm.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Evitar que el formulario se envíe
+
+        const inputField = document.querySelector('#create-post');
+        const postText = inputField.value;
+
+        // Agregar la nueva publicación
+        addPost(postText);
+
+        // Limpiar el campo de entrada después de publicar
+        inputField.value = '';
+    }
+});
+
+const thumbsUpIcon = document.querySelector('.interaction-button .uil-thumbs-up');
+const likeCount = document.querySelector('.interaction-button .like-count');
+
+let likeCounter = 0;
+let isLiked = false;
+
+thumbsUpIcon.addEventListener('click', () => {
+    if (!isLiked) {
+        likeCounter++;
+        thumbsUpIcon.classList.add('active');
+        isLiked = true;
+    } else {
+        likeCounter--;
+        thumbsUpIcon.classList.remove('active');
+        isLiked = false;
+    }
+    likeCount.textContent = likeCounter;
 });
 

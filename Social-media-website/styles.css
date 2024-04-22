@@ -240,6 +240,8 @@ main .container .left{
     gap: 0.5rem;
 }
 
+
+
 .middle .stories .story{
     padding: 1rem;
     border-radius: 1rem;
@@ -367,7 +369,19 @@ main .container .left{
 
 .middle .feed .edit{
     margin-left: 240px;
+    cursor: pointer;
 }
+
+.middle .feed .action-button .interaction-button .uil{
+    cursor: pointer;
+}
+
+.middle .feed .action-button .interaction-button .uil.active {
+    color: orange;
+    cursor: pointer;
+}
+
+
 
 .middle .liked-by{
     display: flex;
